@@ -1,14 +1,19 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, RouteComponentProps } from 'react-router-dom';
+import { RootState } from '../../app/store';
+import { RouterProps } from '../../types';
 import { PostAuthor } from './PostAuthor';
+import { Post } from './postsSlice';
 import { ReactionButtons } from './ReactionButtons';
 import { TimeAgo } from './TimeAgo';
 
-export const SinglePostPage = ({ match }) => {
+interface Props extends RouteComponentProps<RouterProps> {}
+
+export const SinglePostPage = ({ match }: Props) => {
   const { postId } = match.params;
 
-  const post = useSelector((state) =>
+  const post = useSelector<RootState, Post | undefined>((state) =>
     state.posts.find((post) => post.id === postId)
   );
 

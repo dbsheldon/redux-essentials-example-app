@@ -1,7 +1,11 @@
 import React from 'react';
 import { parseISO, formatDistanceToNow } from 'date-fns';
 
-export const TimeAgo = ({ timestamp }) => {
+interface Props {
+  timestamp: string;
+}
+
+export const TimeAgo = ({ timestamp }: Props) => {
   let timeAgo = '';
   if (timestamp) {
     const date = parseISO(timestamp);

@@ -1,24 +1,30 @@
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { RouteComponentProps, useHistory } from 'react-router-dom';
+import { RootState } from '../../app/store';
+import { RouterProps } from '../../types';
 
-import { postUpdated } from './postsSlice';
+import { Post, postUpdated } from './postsSlice';
 
-export const EditPostForm = ({ match }) => {
+interface Props extends RouteComponentProps<RouterProps> {}
+
+export const EditPostForm = ({ match }: Props) => {
   const { postId } = match.params;
 
-  const post = useSelector((state) =>
+  const post = useSelector<RootState, Post | undefined>((state) =>
     state.posts.find((post) => post.id === postId)
   );
 
-  const [title, setTitle] = useState(post.title);
-  const [content, setContent] = useState(post.content);
+  const [title, setTitle] = useState(post?.title ?? '');
+  const [content, setContent] = useState(post?.content ?? '');
 
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const onTitleChanged = (e) => setTitle(e.target.value);
-  const onContentChanged = (e) => setContent(e.target.value);
+  const onTitleChanged = (e: ChangeEvent<HTMLInputElement>) =>
+    setTitle(e.target.value);
+  const onContentChanged = (e: ChangeEvent<HTMLTextAreaElement>) =>
+    setContent(e.target.value);
 
   const onSavePostClicked = () => {
     if (title && content) {

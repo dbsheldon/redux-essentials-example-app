@@ -1,11 +1,13 @@
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { RootState } from '../../app/store';
 import { PostAuthor } from './PostAuthor';
+import { Post } from './postsSlice';
 import { ReactionButtons } from './ReactionButtons';
 import { TimeAgo } from './TimeAgo';
 
 export function PostsList() {
-  const posts = useSelector((state) => state.posts);
+  const posts = useSelector<RootState, Post[]>((state) => state.posts);
   // Sort posts in reverse chronological order by datetime string
   const orderedPosts = [...posts].sort((a, b) => b.date.localeCompare(a.date));
 

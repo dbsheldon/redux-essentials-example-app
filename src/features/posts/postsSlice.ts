@@ -1,7 +1,31 @@
-import { createSlice, nanoid } from '@reduxjs/toolkit';
+import { createSlice, nanoid, PayloadAction } from '@reduxjs/toolkit';
 import { sub } from 'date-fns';
 
-const initialState = [
+interface Reactions {
+  [index: string]: number;
+  thumbsUp: number;
+  hooray: number;
+  heart: number;
+  rocket: number;
+  eyes: number;
+}
+
+export interface Post {
+  id: string;
+  title: string;
+  content: string;
+  user: string;
+  date: string;
+  reactions: Reactions;
+}
+
+interface PostUpdate {
+  id: string;
+  title: string;
+  content: string;
+}
+
+const initialState: Post[] = [
   {
     id: '1',
     title: 'First Post!',
@@ -25,7 +49,7 @@ const postsSlice = createSlice({
   initialState,
   reducers: {
     postAdded: {
-      reducer(state, action) {
+      reducer(state, action: PayloadAction<Post>) {
         state.push(action.payload);
       },
       prepare(title, content, userId) {
@@ -41,7 +65,7 @@ const postsSlice = createSlice({
         };
       },
     },
-    postUpdated(state, action) {
+    postUpdated(state, action: PayloadAction<PostUpdate>) {
       const { id, title, content } = action.payload;
       const existingPost = state.find((post) => post.id === id);
       if (existingPost) {
@@ -50,7 +74,8 @@ const postsSlice = createSlice({
       }
     },
     reactionAdded(state, action) {
-      const { postId, reaction } = action.payload;
+      const { postId, reaction }: { postId: string; reaction: string } =
+        action.payload;
       const existingPost = state.find((post) => post.id === postId);
       if (existingPost) {
         existingPost.reactions[reaction]++;
