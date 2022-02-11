@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '../../app/store';
 import { Post, reactionAdded } from './postsSlice';
 
 const reactionEmoji = {
@@ -15,7 +15,7 @@ interface Props {
 }
 
 export const ReactionButtons = ({ post }: Props) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const reactionButtons = Object.entries(reactionEmoji).map(([name, emoji]) => {
     return (

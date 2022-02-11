@@ -4,7 +4,7 @@ import { Link, RouteComponentProps } from 'react-router-dom';
 import { RootState } from '../../app/store';
 import { RouterProps } from '../../types';
 import { PostAuthor } from './PostAuthor';
-import { Post } from './postsSlice';
+import { selectPostById } from './postsSlice';
 import { ReactionButtons } from './ReactionButtons';
 import { TimeAgo } from './TimeAgo';
 
@@ -13,9 +13,7 @@ interface Props extends RouteComponentProps<RouterProps> {}
 export const SinglePostPage = ({ match }: Props) => {
   const { postId } = match.params;
 
-  const post = useSelector<RootState, Post | undefined>((state) =>
-    state.posts.find((post) => post.id === postId)
-  );
+  const post = useSelector((state: RootState) => selectPostById(state, postId));
 
   if (!post) {
     return (

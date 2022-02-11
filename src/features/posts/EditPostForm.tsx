@@ -1,24 +1,22 @@
 import React, { ChangeEvent, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RouteComponentProps, useHistory } from 'react-router-dom';
-import { RootState } from '../../app/store';
+import { RootState, useAppDispatch } from '../../app/store';
 import { RouterProps } from '../../types';
 
-import { Post, postUpdated } from './postsSlice';
+import { postUpdated, selectPostById } from './postsSlice';
 
 interface Props extends RouteComponentProps<RouterProps> {}
 
 export const EditPostForm = ({ match }: Props) => {
   const { postId } = match.params;
 
-  const post = useSelector<RootState, Post | undefined>((state) =>
-    state.posts.find((post) => post.id === postId)
-  );
+  const post = useSelector((state: RootState) => selectPostById(state, postId));
 
   const [title, setTitle] = useState(post?.title ?? '');
   const [content, setContent] = useState(post?.content ?? '');
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const history = useHistory();
 
   const onTitleChanged = (e: ChangeEvent<HTMLInputElement>) =>

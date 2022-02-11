@@ -1,8 +1,9 @@
 import { configureStore } from '@reduxjs/toolkit';
-import postsReducer, { Post } from '../features/posts/postsSlice';
-import usersReducer, { User } from '../features/users/usersSlice';
+import { useDispatch } from 'react-redux';
+import postsReducer, { PostsState } from '../features/posts/postsSlice';
+import usersReducer, { UsersState } from '../features/users/usersSlice';
 
-export default configureStore({
+const store = configureStore({
   reducer: {
     posts: postsReducer,
     users: usersReducer,
@@ -10,6 +11,11 @@ export default configureStore({
 });
 
 export interface RootState {
-  posts: Post[];
-  users: User[];
+  posts: PostsState;
+  users: UsersState;
 }
+
+export type AppDispatch = typeof store.dispatch;
+export const useAppDispatch = () => useDispatch<AppDispatch>();
+
+export default store;
