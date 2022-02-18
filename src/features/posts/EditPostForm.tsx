@@ -2,11 +2,11 @@ import React, { ChangeEvent, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { RouteComponentProps, useHistory } from 'react-router-dom';
 import { RootState, useAppDispatch } from '../../app/store';
-import { RouterProps } from '../../types';
+import { PostRouterProps } from '../../types';
 
 import { postUpdated, selectPostById } from './postsSlice';
 
-interface Props extends RouteComponentProps<RouterProps> {}
+interface Props extends RouteComponentProps<PostRouterProps> {}
 
 export const EditPostForm = ({ match }: Props) => {
   const { postId } = match.params;

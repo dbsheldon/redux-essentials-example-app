@@ -1,14 +1,17 @@
+import { EntityId } from '@reduxjs/toolkit';
 import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { RootState, useAppDispatch } from '../../app/store';
 import { Spinner } from '../../components/Spinner';
 import { PostAuthor } from './PostAuthor';
-import { fetchPosts, Post, selectAllPosts } from './postsSlice';
+import { fetchPosts, selectPostById, selectPostIds } from './postsSlice';
 import { ReactionButtons } from './ReactionButtons';
 import { TimeAgo } from './TimeAgo';
 
-const PostExcerpt = ({ post }: { post: Post }) => {
+const PostExcerpt = ({ postId }: { postId: EntityId }) => {
+  const post = useSelector((state: RootState) => selectPostById(state, postId));
+  if (!post) return <div>Post was not found!</div>;
   return (
     <article className="post-excerpt" key={post.id}>
       <h3>{post.title}</h3>
@@ -28,7 +31,7 @@ const PostExcerpt = ({ post }: { post: Post }) => {
 
 export function PostsList() {
   const dispatch = useAppDispatch();
-  const posts = useSelector(selectAllPosts);
+  const orderedPostIds = useSelector(selectPostIds);
   const postStatus = useSelector(
     (state: RootState) => state.posts.apiStatus.fetchPosts
   );
@@ -43,13 +46,8 @@ export function PostsList() {
   if (postStatus === 'loading') {
     content = <Spinner text="Loading..." />;
   } else if (postStatus === 'succeeded') {
-    // Sort posts in reverse chronological order by datetime string
-    const orderedPosts = [...posts].sort((a, b) =>
-      b.date.localeCompare(a.date)
-    );
-
-    content = orderedPosts.map((post) => (
-      <PostExcerpt key={post.id} post={post} />
+    content = orderedPostIds.map((postId) => (
+      <PostExcerpt key={postId} postId={postId} />
     ));
   } else if (postStatus === 'failed') {
     content = <div>{error}</div>;

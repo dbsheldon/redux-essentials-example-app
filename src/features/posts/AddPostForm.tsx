@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { ChangeEventHandler } from 'react';
 import { useSelector } from 'react-redux';
-import { RootState, useAppDispatch } from '../../app/store';
-import { User } from '../users/usersSlice';
-import { addNewPost, postAdded } from './postsSlice';
+import { useAppDispatch } from '../../app/store';
+import { selectAllUsers } from '../users/usersSlice';
+import { addNewPost } from './postsSlice';
 
 export const AddPostForm = () => {
   const [title, setTitle] = useState('');
   const [content, setContent] = useState('');
   const [userId, setUserId] = useState('');
-  const users = useSelector<RootState, User[]>((state) => state.users.users);
+  const users = useSelector(selectAllUsers);
   const [addRequestStatus, setAddRequestStatus] = useState('idle');
 
   const dispatch = useAppDispatch();

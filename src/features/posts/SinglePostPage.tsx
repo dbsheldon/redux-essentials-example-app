@@ -2,13 +2,13 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Link, RouteComponentProps } from 'react-router-dom';
 import { RootState } from '../../app/store';
-import { RouterProps } from '../../types';
+import { PostRouterProps } from '../../types';
 import { PostAuthor } from './PostAuthor';
 import { selectPostById } from './postsSlice';
 import { ReactionButtons } from './ReactionButtons';
 import { TimeAgo } from './TimeAgo';
 
-interface Props extends RouteComponentProps<RouterProps> {}
+interface Props extends RouteComponentProps<PostRouterProps> {}
 
 export const SinglePostPage = ({ match }: Props) => {
   const { postId } = match.params;
